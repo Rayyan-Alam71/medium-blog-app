@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
-
+import {createBlogInput, updateBlogInput} from "medium-common-rayyan"
 export const blogRouter = new Hono<{
   Bindings:{
     DATABASE_URL : string,
@@ -19,9 +19,9 @@ blogRouter.use('/*' ,async (c, next)=>{
   // extract the user id and pass it down to the route handler
   const header = c.req.header('Authorization') || ""
   const token = header.split(" ")[1]
+
   try{
     const res = await verify(token , c.env.JWT_SECRET)
-
     if(!res.id){
       c.status(403)
       return c.json({
@@ -45,11 +45,17 @@ blogRouter.post('/', async (c)=>{
     const prisma = new PrismaClient({
       datasourceUrl: c.env.DATABASE_URL,
     }).$extends(withAccelerate());
-    
     const userId = c.get("userId")
 
     const body = await c.req.json()
-
+    const {success, error} = createBlogInput.safeParse(body)
+    if(!success){
+      c.status(411)
+      return c.json({
+        msg : "invlid input",
+        error
+      })
+    }
     try{
       const blog = await prisma.post.create({
         data:{

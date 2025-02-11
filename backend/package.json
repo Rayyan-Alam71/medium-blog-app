@@ -9,6 +9,8 @@
     "@prisma/extension-accelerate": "^1.2.1",
     "dotenv": "^16.4.7",
     "hono": "^4.6.18",
+    "medium-common-rayyan": "^1.0.0",
+    "medium-common-rayyan-alam": "^1.0.0",
     "prisma": "^6.3.0"
   },
   "devDependencies": {
