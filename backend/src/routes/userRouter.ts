@@ -13,30 +13,6 @@ export const userRouter = new Hono<{
       userId : string
     }
 }>()
-// implementing a middleware to verify the user before letting him proceed 
-
-// userRouter.use("/*", async (c, next) => {
-//   const token = c.req.header("Authorization")?.split(" ")[1] || ""
-
-//   try{
-//     const res = await verify(token , c.env.JWT_SECRET)
-//     if(!res.id){
-//       c.status(403)
-//       return c.json({
-//         msg : "Invalid credentials"
-//       })
-//     }
-
-//     c.set("userId", String(res.id))
-//     await next();
-//   }
-//   catch(e){
-//     c.status(403)
-//     return c.text("some error occurred")
-//   }
-
-// })
-
 
 
 
